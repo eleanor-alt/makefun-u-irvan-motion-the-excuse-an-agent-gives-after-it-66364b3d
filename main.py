@@ -27,6 +27,8 @@ def main() -> None:
         raise ValueError("line must not have leading or trailing whitespace")
     if encoded.decode("utf-8") != LINE:
         raise ValueError("line is not round-trip UTF-8")
+    if any(ord(ch) < 0x20 for ch in LINE):
+        raise ValueError("line must not contain control characters")
     path = sys.argv[1] if len(sys.argv) > 1 else "/output/entry.txt"
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
     with open(path, "wb") as f:
